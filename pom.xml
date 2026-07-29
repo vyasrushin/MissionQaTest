@@ -1,185 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>org.mission</groupId>
-    <artifactId>MissionQA</artifactId>
-    <version>1.0-SNAPSHOT</version>
+	<modelVersion>4.0.0</modelVersion>
 
-    <url>http://maven.apache.org</url>
+	<groupId>org.mission</groupId>
+	<artifactId>MissionQA</artifactId>
+	<version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
 
-    <dependencies>
+		<cucumber.version>7.14.0</cucumber.version>
+		<selenium.version>4.17.0</selenium.version>
+		<testng.version>7.9.0</testng.version>
+		<restassured.version>5.4.0</restassured.version>
+		<webdrivermanager.version>5.6.3</webdrivermanager.version>
+		<jackson.version>2.15.2</jackson.version>
+		<commonsio.version>2.15.1</commonsio.version>
+		<json.version>20240303</json.version>
+	</properties>
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-jvm</artifactId>
-            <version>1.2.5</version>
-            <type>pom</type>
-        </dependency>
+	<dependencies>
+		<!-- SLF4J logger implementation -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>2.0.13</version>
+		</dependency>
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-jvm-deps</artifactId>
-            <version>1.0.5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-core</artifactId>
-            <version>1.2.5</version>
-        </dependency>
+		<!-- ================= CUCUMBER ================= -->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-testng</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+
+		<!-- ================= TESTNG ================= -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- ================= SELENIUM ================= -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>${webdrivermanager.version}</version>
+		</dependency>
+
+		<!-- ================= REST ASSURED ================= -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>${restassured.version}</version>
+		</dependency>
+
+		<!-- ================= JSON / JACKSON ================= -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<!-- ================= UTILITIES ================= -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commonsio.version}</version>
+		</dependency>
+
+		<!-- Extent Reports -->
+		<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>5.1.1</version>
+		</dependency>
+
+		<!-- Extent Cucumber Adapter -->
+		<dependency>
+			<groupId>tech.grasshopper</groupId>
+			<artifactId>extentreports-cucumber7-adapter</artifactId>
+			<version>1.14.0</version>
+		</dependency>
 
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>1.2.5</version>
-            <scope>test</scope>
-        </dependency>
+	</dependencies>
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>gherkin</artifactId>
-            <version>2.12.2</version>
-        </dependency>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>net.masterthought</groupId>
+				<artifactId>maven-cucumber-reporting</artifactId>
+				<version>5.7.8</version>
+				<executions>
+					<execution>
+						<id>generate-cucumber-report</id>
+						<phase>verify</phase> <!-- keep verify -->
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<projectName>Mission QA Framework</projectName>
+							<outputDirectory>
+								${project.build.directory}/cucumber-merged-report</outputDirectory>
+							<jsonFiles>
+								<param>
+									${project.build.directory}/cucumber-json/*.json</param>
+							</jsonFiles>
+							<buildNumber>1</buildNumber>
+							<skip>false</skip>
+							<parallelTesting>false</parallelTesting> <!--
+							important! -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-html</artifactId>
-            <version>0.2.6</version>
-        </dependency>
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-pro</artifactId>
-            <version>1.0.16</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-testng</artifactId>
-            <version>1.2.5</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.testng</groupId>-->
-        <!--            <artifactId>testng</artifactId>-->
-        <!--            <version>6.14.3</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-        <dependency>
-            <groupId>net.masterthought</groupId>
-            <artifactId>cucumber-reporting</artifactId>
-            <version>4.2.2</version>
-        </dependency>
+			<!-- Maven Surefire Plugin for TestNG -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+			</plugin>
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
-            <scope>test</scope>
-        </dependency>
+		</plugins>
+	</build>
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
-            <version>3.141.59</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-api</artifactId>
-            <version>3.141.59</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-htmlunit-driver</artifactId>
-            <version>2.52.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium</artifactId>
-            <version>2.0rc2</version>
-            <type>pom</type>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-plugin-api</artifactId>
-            <version>3.6.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-artifact</artifactId>
-            <version>3.6.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
-            <version>3.6.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-project</artifactId>
-            <version>2.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.0.0-beta3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>4.1.2</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>json-path</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>xml-path</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20190722</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>3.3.0</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
 </project>

@@ -1,7 +1,23 @@
+@ui
 Feature: Checkout items in the basket
   Please use home page of https://www.saucedemo.com/
 
-  Scenario: Check item total cost and tax
+Scenario: 1 Valid user completes a simple order journey
+    Given the user opens the SauceDemo login page
+    When the user logs in with valid credentials
+    Then the products page should be displayed
+    And the user adds a backpack to the cart
+    And the user opens the cart
+    Then the cart should contain the backpack
+    When the user completes checkout
+    Then the order should be completed successfully
+
+  Scenario: 2 Invalid login shows an error message
+    Given the user opens the SauceDemo login page
+    When the user logs in with username "locked_out_user" and password "wrong_password"
+    Then an error message should be displayed
+  
+  Scenario: 3 Check item total cost and tax
     Given I am on the home page
     And I login in with the following details
       | userName      | Password     |

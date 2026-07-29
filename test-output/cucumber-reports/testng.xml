@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testng-results failed="0" passed="0" skipped="3" total="3">
+    <suite duration-ms="0" name="cucumber.runtime.formatter.TestNGFormatter">
+        <test duration-ms="0" name="cucumber.runtime.formatter.TestNGFormatter">
+            <class name="API test">
+                <test-method duration-ms="0" finished-at="2026-07-28T20:14:43Z" name="Should see LIST USERS of all existing users" started-at="2026-07-28T20:14:43Z" status="SKIP"/>
+            </class>
+            <class name="Sample Test">
+                <test-method duration-ms="0" finished-at="2026-07-28T20:14:43Z" name="Sample" started-at="2026-07-28T20:14:43Z" status="SKIP"/>
+            </class>
+            <class name="Checkout items in the basket">
+                <test-method duration-ms="0" finished-at="2026-07-28T20:14:43Z" name="Check item total cost and tax" started-at="2026-07-28T20:14:43Z" status="SKIP"/>
+            </class>
+        </test>
+    </suite>
+</testng-results>

@@ -1,60 +1,62 @@
-package mission;
+package mission.Base;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import java.text.MessageFormat;
+import java.time.Duration;
+import mission.utils.LoadProp;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.Assert;
-
-import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BrowserSetup extends BasePage {
 
     public static String browser = null;
-    private static final String CHROME_WIN = "src\\test\\java\\BrowserDirectory\\chromedriver.exe";
-    private static final String EDGE = "src\\test\\java\\BrowserDirectory\\MicrosoftWebDriver.exe";
-    private static final String FIREFOX_WIN = "src\\test\\java\\BrowserDirectory\\geckodriver.exe";
-    private static final String CHROME_MAC = "src/test/java/BrowserDirectory/chromedriver-Mac";
+    WebDriver driver;
 
 
-    /**
-     * Browser property location /src/test/java/TestData/TestData.properties
-     */
-
-
-    /**
-     * Function for multi browser
-     */
-    public void selectBrowser() {
+    public WebDriver selectBrowser() {
+    	
         browser = LoadProp.getProperty("Browser");
 
-        if (browser.equalsIgnoreCase("Chrome")) {
-            //System.setProperty("webdriver.chrome.driver", CHROME_WIN);
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
+        if (browser.equalsIgnoreCase("firefox")) {
+            WebDriverManager.firefoxdriver().setup();
+            driver = new FirefoxDriver();
         } else if (browser.equalsIgnoreCase("edge")) {
-            //System.setProperty("webdriver.edge.driver", EDGE);
+            
             WebDriverManager.edgedriver().setup();
             driver = new EdgeDriver();
-        } else if (browser.equalsIgnoreCase("Firefox")) {
-            WebDriverManager.firefoxdriver().setup();
-            //System.setProperty("webdriver.gecko.driver", FIREFOX_WIN);
-            driver = new FirefoxDriver();
-        } else if (browser.equalsIgnoreCase("chromeMac")) {
-            //System.setProperty("webdriver.chrome.driver", CHROME_MAC);
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        } else if (browser.equalsIgnoreCase("chromeHeadless")) {
-            //System.setProperty("webdriver.chrome.driver", CHROME_MAC);
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.addArguments("--headless");
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver(chromeOptions);
-        } else if (browser.equalsIgnoreCase("api")) {
+        } else if (browser.equalsIgnoreCase("chrome")) {
+            
+        	WebDriverManager.chromedriver().setup();
+        	ChromeOptions chromeOptions = new ChromeOptions();
+            
+        	// Disable Google Password Manager popup
+			Map<String, Object> prefs = new HashMap<>();
+			prefs.put("credentials_enable_service", false);
+			prefs.put("profile.password_manager_enabled", false);
+			prefs.put("profile.password_manager_leak_detection", false);
 
+			chromeOptions.setExperimentalOption("prefs", prefs);
+			chromeOptions.addArguments("--disable-notifications");
+			chromeOptions.addArguments("--disable-infobars");
+
+			driver = new ChromeDriver(chromeOptions);
+            
         } else {
-            Assert.fail(MessageFormat.format("Wrong Browser: {0}", browser));
+            System.out.println(MessageFormat.format("Wrong Browser: {0}", browser));
         }
+
+        driver.manage().timeouts().implicitlyWait(
+        	    Duration.ofSeconds(Integer.parseInt(LoadProp.getProperty("implicitWait"))));
+        
+        //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(LoadProp.getProperty("implicitWait"))),null);
+        driver.manage().window().maximize();
+        BasePage.setDriver(driver);
+        return BasePage.getDriver(); // Implement for Threading
+        //return driver;
     }
 }

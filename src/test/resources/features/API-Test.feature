@@ -1,49 +1,72 @@
+@Restapi
 Feature: API test
-# Please visit https://reqres.in/
-
-  Scenario: Should see LIST USERS of all existing users
-    Given I get the default list of users for on 1st page
-    When I get the list of all users within every page
-    Then I should see total users count equals the number of user ids
+  Please use home page of https://www.saucedemo.com/
 
 
-  Scenario: Should see SINGLE USER data
-    Given I make a search for user 3
-    Then I should see the following user data
-      | first_name | email               |
-      | Emma       | emma.wong@reqres.in |
+  Scenario: 1 Should see LIST PRODUCTS of all existing products
+    Given I get the default list of products for on 1st page
+    When I get the list of all products within every page
+    Then I should see total product count equals the number of products is 12
+    
+  Scenario: 2 Fetch a single user by user id
+    Given the ReqRes API client is available
+    When the user fetches user with id 2
+    Then the API response status should be 200
+    And the response should contain first name "Janet"
+
+  Scenario: 3 Fetch a single user by user id
+    Given the ReqRes API client is available
+    When the user fetches user with id 12
+    Then the API response status should be 200
+    And the response should contain first name "Rachel"
+    
+  Scenario: 4 Create a new user
+    Given the ReqRes API client is available
+    When the user creates a new ReqRes user with name "Vedlogic" and job "QA Engineer"
+    Then the API response status should be 201
+    And the created response should contain name "Vedlogic"
+
+  Scenario: 5 Delete a user
+    Given the ReqRes API client is available
+    When the user deletes user with id 2
+    Then the API response status should be 204
+    
+  Scenario: 6 Should see SINGLE USER NOT FOUND error code
+    Given the ReqRes API client is available
+    When the user fetches user with id 55
+    Then the API response status should be 404
+
+  Scenario Outline: 7 CREATE a user
+ 	Given the ReqRes API client is available
+  	When the user creates a new ReqRes user with name "<Name>" and job "<Job>"
+  	Then the API response status should be 201
+  	And the created response should contain name "<Name>"
+
+	Examples:
+	  | Name  | Job     |
+	  | Peter | Manager |
+	  | Liza  | Sales   |
 
 
-  Scenario: Should see SINGLE USER NOT FOUND error code
-    Given I make a search for user 55
-    Then I receive error code 404 in response
-
-
-  Scenario Outline: CREATE a user
-    Given I create a user with following <Name> <Job>
-    Then response should contain the following data
-      | name | job | id | createdAt |
-
-    Examples:
-      | Name  | Job     |
-      | Peter | Manager |
-      | Liza  | Sales   |
-
-
-  Scenario: LOGIN - SUCCESSFUL by a user
-    Given I login unsuccessfully with the following data
+  Scenario: 8 LOGIN - SUCCESSFUL by a user
+    Given I login API with the following data
       | Email              | Password   |
       | eve.holt@reqres.in | cityslicka |
-    Then I should get a response code of 200
-
-  Scenario: LOGIN - UNSUCCESSFUL by a user
-    Given I login unsuccessfully with the following data
+    Then the API response status should be 200
+        
+  Scenario: 9 LOGIN - UNSUCCESSFUL BLANK password
+    Given I login API with the following data
       | Email              | Password |
       | eve.holt@reqres.in |          |
-    Then I should get a response code of 400
+    Then the API response status should be 400
     And I should see the following response message:
       | "error": "Missing password" |
 
-  Scenario: Should see the list of users with DELAYED RESPONSE
-    Given I wait for the user list to load
-    Then I should see that every user has a unique id
+  Scenario: 10 LOGIN - UNSUCCESSFUL BLANK username
+    Given I login API with the following data
+      | Email              | Password   |
+      |                    | cityslicka |
+    Then the API response status should be 400
+    And I should see the following response message:
+      | "error": "Missing email or username" |
+
