@@ -21,4 +21,12 @@ public class WaitUtils {
     public void waitForClickability(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
+    
+    public void waitForSeconds(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000L);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }

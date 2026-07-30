@@ -29,6 +29,7 @@ public class LoginPage {
     public void enterUsername(String username) {
         WebElement element = driver.findElement(usernameInput);
         waitUtils.waitForVisibility(element);
+        
         element.clear();
         element.sendKeys(username);
     }
@@ -37,6 +38,7 @@ public class LoginPage {
         WebElement element = driver.findElement(passwordInput);
         element.clear();
         element.sendKeys(password);
+        waitUtils.waitForSeconds(1);
     }
 
     public void clickLogin() {
@@ -46,7 +48,9 @@ public class LoginPage {
     public void loginAs(String username, String password) {
         enterUsername(username);
         enterPassword(password);
+        waitUtils.waitForSeconds(1);
         clickLogin();
+        waitUtils.waitForSeconds(1);
     }
 
     public String getErrorMessage() {

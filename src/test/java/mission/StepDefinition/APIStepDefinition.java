@@ -16,20 +16,20 @@ public class APIStepDefinition {
     private final APIResReq reqResClient = new APIResReq();
     private Response response;
 
-    @Given("^I get the default list of products for on 1st page")
-    public void iGetTheDefaultListofproducts() {
-    	response = reqResClient.listProducts(1);
+    @Given("^I get the default list of users for on 1st page")
+    public void iGetTheDefaultListofusers() {
+    	response = reqResClient.listTotalUsers();
     }
     
-    @When("I get the list of all products within every page")
-    public void iGetTheListOfAllProducts() {
+    @When("I get the list of all users within every page")
+    public void iGetTheListOfAllUsers() {
     	Integer statusCode = 200;
     	Assert.assertEquals(response.getStatusCode(), statusCode.intValue());
     	System.out.println("Response Status Code: " + response.getStatusCode());
     	
     }
     
-    @Then("I should see total product count equals the number of products is {int}")
+    @Then("I should see total user count equals the number of products is {int}")
     public void iShouldMatchTotalCount(Integer totcount) {
     	String totalProducts = response.jsonPath().getString("total");
 
@@ -42,7 +42,6 @@ public class APIStepDefinition {
     		Assert.fail("Total user counts are not found: ");
     		
     	}
-        Hook.scenario.attach(response.asPrettyString(), "application/json", "API Response");
     }
 
     
@@ -95,11 +94,6 @@ public class APIStepDefinition {
 	    String password = data.get(0).get("Password");
 
 	    response = reqResClient.loginUser(email, password);
-
-	    Hook.scenario.attach(
-	            response.asPrettyString(),
-	            "application/json",
-	            "Login Response");
 	}
 	
 	@Then("I should see the following response message:")
@@ -116,7 +110,5 @@ public class APIStepDefinition {
 	    String actualMessage = response.jsonPath().getString("error");
 
 	    Assert.assertEquals(actualMessage, expectedMessage);
-
-	    Hook.scenario.log("Error Message : " + actualMessage);
 	}
 }

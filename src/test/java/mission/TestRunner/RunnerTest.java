@@ -19,7 +19,7 @@ import io.cucumber.testng.CucumberOptions;
 
 	public class RunnerTest extends AbstractTestNGCucumberTests {
 		@Override
-		@DataProvider(parallel = false)  // Enables parallel execution without testing.xml. OR we can use testing.xml for parallel execution
+		@DataProvider(parallel = true)  // Enables parallel execution without testing.xml. OR we can use testing.xml for parallel execution
 		
 		public Object[][] scenarios(){
 			return super.scenarios();

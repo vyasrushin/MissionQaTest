@@ -52,11 +52,10 @@ public class APIResReq {
 		return response;
 	}
 	
-	public Response listProducts(int page) {
+	public Response listTotalUsers() {
 		Response response =   getRequest()
-	            .queryParam("page", page)
 	            .when()
-	            .get("/api/products")
+	            .get("/api/users")
 	            .then()
 	            .log().all()
 	            .extract()

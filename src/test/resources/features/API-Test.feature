@@ -1,12 +1,12 @@
 @Restapi
 Feature: API test
-  Please use home page of https://www.saucedemo.com/
+  Please use URL for API is https://reqres.in/
 
 
-  Scenario: 1 Should see LIST PRODUCTS of all existing products
-    Given I get the default list of products for on 1st page
-    When I get the list of all products within every page
-    Then I should see total product count equals the number of products is 12
+  Scenario: 1 Should see LIST USER of all existing users
+    Given I get the default list of users for on 1st page
+    When I get the list of all users within every page
+    Then I should see total user count equals the number of products is 12
     
   Scenario: 2 Fetch a single user by user id
     Given the ReqRes API client is available
